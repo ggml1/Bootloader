@@ -99,7 +99,7 @@ PRINT_DOT:
     .while:
         mov si, dot
         call PRINT_STRING
-        mov dx, 1500 ;20000
+        mov dx, 15000 ;20000
         call DELAY
         dec cx
         cmp cx, 0

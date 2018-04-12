@@ -530,7 +530,13 @@ ANALYZE_COMMAND:
 
         call READ_NUMBER
 
-        mov si, quotientResult
+	mov si, value2
+	mov di, zeroString
+	call STRCMP
+	cmp cl, 0
+	je .div.byZero
+	
+	mov si, quotientResult
         call PRINT
 
         mov si, value1
@@ -545,6 +551,10 @@ ANALYZE_COMMAND:
         dec si
 
         xor dx, dx
+
+	cmp bx, 0
+	je .div.byZero	
+	
         div bx
 
         mov di, valuef
@@ -601,6 +611,11 @@ ANALYZE_COMMAND:
         ; work div
         jmp .done
 
+    .div.byZero:
+	mov si, divByZero
+	call PRINT
+
+	jmp .done
     .error:
         mov di, command
         mov si, unknownCommand
@@ -1035,7 +1050,9 @@ var:
     escolhaMult db 'Input two numbers to be multiplied, one on each line: ', 10, 13, 0
     escolhaDiv db 'Input two numbers to be divided, one on each line: ', 10, 13, 0
     escolhaSub db 'Input two numbers to be subtracted, one on each line: ', 10, 13, 0
+    divByZero db 'You cant divide by zero. Choose another number and try again.', 10, 13, 0
     y db 'Y', 0
+    zeroString db '0', 0
     credits0 db 10, '-----------------------------------------', 10, 13, 0
     credits1 db '------- Bootloader created by:   --------', 10, 13, 0
     credits2 db '------- Gabriel Mendes  - @ggml  --------', 10, 13, 0
